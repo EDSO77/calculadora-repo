@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/common_min_padding"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:background="@color/common_background">
+
+        <TextView
+            android:id="@+id/cal_screen"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/common_background"
+            android:textColor="@color/white"
+            android:textSize="72sp"
+            android:text=""
+            android:textAlignment="gravity"
+            android:gravity="bottom|end" />
+
+        <TextView
+            android:id="@+id/cal_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/common_background"
+            android:textColor="@color/white"
+            android:textSize="72sp"
+            android:text="0.0"
+            android:textAlignment="gravity"
+            android:gravity="bottom|end" />
+
+    </LinearLayout>
+
+
+    <!--Botones-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:background="@color/common_background">
+
+        <!--Linea1-->
+        <LinearLayout
+            android:id="@+id/line_1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_clear"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="3"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="CLEAR" />
+
+            <Button
+                android:id="@+id/bt_division"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="/" />
+
+        </LinearLayout>
+
+
+        <!--Linea2-->
+        <LinearLayout
+            android:id="@+id/line_2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/bt8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="8" />
+
+            <Button
+            android:id="@+id/bt9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/common_min_padding"
+            android:layout_weight="1"
+            android:textSize="@dimen/buton_text_size"
+            app:backgroundTint="#3F51B5"
+            android:text="9" />
+
+            <Button
+                android:id="@+id/bt_multiplicacion"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="X" />
+
+        </LinearLayout>
+
+        <!--Linea3-->
+        <LinearLayout
+            android:id="@+id/line_3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/bt5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/bt6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="6" />
+
+            <Button
+                android:id="@+id/bt_menos"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="-" />
+
+        </LinearLayout>
+
+        <!--Linea4-->
+        <LinearLayout
+            android:id="@+id/line_4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/bt2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/bt3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="3" />
+
+            <Button
+                android:id="@+id/bt_mas"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="+" />
+
+        </LinearLayout>
+
+        <!--Linea5-->
+        <LinearLayout
+            android:id="@+id/line_5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/bt0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="2"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/bt_punto"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#3F51B5"
+                android:text="." />
+
+            <Button
+                android:id="@+id/bt_igual"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="=" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
