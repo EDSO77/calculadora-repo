@@ -16,19 +16,19 @@
         android:background="@color/common_background">
 
         <TextView
-            android:id="@+id/cal_screen"
+            android:id="@+id/tv_cal_screen"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/common_background"
             android:textColor="@color/white"
             android:textSize="72sp"
-            android:text=""
+            android:text="1.1"
             android:textAlignment="gravity"
             android:gravity="bottom|end" />
 
         <TextView
-            android:id="@+id/cal_result"
+            android:id="@+id/tv_cal_result"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -172,7 +172,7 @@
                 android:text="6" />
 
             <Button
-                android:id="@+id/bt_menos"
+                android:id="@+id/bt_resta"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/common_min_padding"
@@ -222,7 +222,7 @@
                 android:text="3" />
 
             <Button
-                android:id="@+id/bt_mas"
+                android:id="@+id/bt_suma"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/common_min_padding"
