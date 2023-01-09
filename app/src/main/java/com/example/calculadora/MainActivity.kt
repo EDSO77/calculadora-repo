@@ -1,9 +1,9 @@
 package com.example.calculadora
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.calculadora.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,15 +12,17 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private var calScreen: String = ""
     private val buttons = arrayOfNulls<Button>(10)
-    private var punto: Boolean= false
     private val listNumber = mutableListOf<String>()
-    private var fullOperation: String=""
-    // empieza como true para que la funcion de verificacion, de inmediato indique al usuario que se requiere un numero
-    private var signo: Boolean = true
-    //cuando se esta ingresando un numero negativo
-    private var subtractionOpen: Boolean=false
+
+    private var fullOperation: String = ""
+    private var numBuilder: String = ""
+
+    private var subtractionOpen: Boolean = false // cuando se esta ingresando un numero negativo
+    private var operatorRequired: Boolean = false
+    private var previousOperator: Boolean = true // empieza como true para que la funcion de verificacion, de inmediato indique al usuario que se requiere un numero
+    private var point: Boolean = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUpView()
+
     }
 
     private fun setUpView() {
@@ -47,19 +50,42 @@ class MainActivity : AppCompatActivity() {
 
             buttons.forEachIndexed { index, button ->
                 button?.setOnClickListener {
-                    fullOperation += index.toString()
-                    calScreen += index.toString()
-                    tvCalScreen.text = fullOperation
-                    signo = false
+                    if (!operatorRequired) {
+                        upDateNumAndScreen(index.toString())
+                        previousOperator = false
+                    } else {
+                        Toast.makeText(this@MainActivity, "Se requiere signo", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
             }
+
+            //Asignacion de boton point
+
             btPunto.setOnClickListener {
-                if (!punto) {
-                    fullOperation += "."
-                    calScreen += "."
-                    tvCalScreen.text = fullOperation
+                if (!operatorRequired) {
+                    if (!point) {
+                        var pointText: String = ""
+                        if (numBuilder == "" || numBuilder == "-") {
+                            pointText += "0."
+                        } else {
+                            pointText += "."
+                        }
+                        upDateNumAndScreen(pointText)
+                        point = true
+                    }
+                } else {
+                    Toast.makeText(this@MainActivity, "Se requiere signo", Toast.LENGTH_SHORT)
+                        .show()
                 }
-                punto = true
+            }
+            //Asignacion parentesis
+            btOpen.setOnClickListener {
+                ///....
+
+            }
+            btClouse.setOnClickListener {
+                ///....
             }
 
             //Asignacion de boton clear
@@ -85,126 +111,154 @@ class MainActivity : AppCompatActivity() {
 
             btIgual.setOnClickListener {
 
-                 if(signo==false && tvCalResult.text != ""){
-                     val aux:String
-                   aux= tvCalResult.text as String
-                   clearAll()
-                   fullOperation += aux
-                   tvCalScreen.text = fullOperation
-                   listNumber.add(aux)
-                     signo=false
-                     Toast.makeText(this@MainActivity, "2", Toast.LENGTH_SHORT)
-                         .show()
+                if (previousOperator == false && tvCalResult.text != "") {
+                    val aux = tvCalResult.text as String
+                    clearAll()
+                    upDateScreen(aux)
+                    listNumber.add(aux)
+                    operatorRequired = true
+                    previousOperator = false
 
 
-                }else if (!signo) {
-                if (calScreen != ""){
-                    listNumber.add(calScreen)
-                    calScreen = ""}
-                if (subtractionOpen){
-                    subtractionOpen=false
-                    fullOperation += ")"
-                    tvCalScreen.text = fullOperation
-                }
-                tvCalResult.text = buildResult()
-                Toast.makeText(this@MainActivity, "1", Toast.LENGTH_SHORT)
-                    .show()
-
-            } else {
-                     Toast.makeText(this@MainActivity, "Se requiere un numero", Toast.LENGTH_SHORT)
-                         .show()
+                } else if (!previousOperator) {
+                    addNumBuilderToList()
+                    if (subtractionOpen) {
+                        upDateScreen(")")
+                        subtractionOpen = false
                     }
+                    tvCalResult.text = buildResult()
+                    if (fullOperation != "") {
+                        operatorRequired = true
+                    }
+
+
+                } else {
+                    Toast.makeText(this@MainActivity, "Se requiere un numero", Toast.LENGTH_SHORT)
+                        .show()
                 }
-
-
             }
+
 
         }
 
+    }
+
+    private fun upDateScreen(addedText: String) {
+        fullOperation += addedText
+        binding.tvCalScreen.text = fullOperation
+    }
+
+    private fun upDateNumAndScreen(addedText: String) {
+        numBuilder += (addedText)
+        upDateScreen(addedText)
+
+    }
+
+    private fun addNumBuilderToList() {
+        if (numBuilder != "") {
+            listNumber.add(numBuilder)
+            numBuilder = ""
+        }
+    }
 
     private fun clearAll() {
         binding.tvCalResult.text = ""
         binding.tvCalScreen.text = ""
-        fullOperation=""
-        calScreen = ""
+        fullOperation = ""
+        numBuilder = ""
         listNumber.clear()
-        punto = false
-        signo=true
+        point = false
+        previousOperator = true
+        operatorRequired = false
+        subtractionOpen = false
     }
 
     private fun numberOnChangeListener(operationCalculator: OperationCalculator) {
-        if(signo==false) {
-            binding.tvCalResult.text =""
-            if (subtractionOpen==true){
-                subtractionOpen=false
-                fullOperation += ")"
-                binding.tvCalScreen.text = fullOperation
+
+        operatorRequired = false
+
+        if (!previousOperator) {
+            if (subtractionOpen == true) {
+                upDateScreen(")")
+                subtractionOpen = false
             }
-            if (calScreen != ""){
-            listNumber.add(calScreen)
-            calScreen = ""}
-            fullOperation += operationCalculator.value
+            if((binding.tvCalResult.text as String)!="") { // para resetear tvCalResult despues de haber presionado "="
+                fullOperation="($fullOperation)"
+                binding.tvCalScreen.text = fullOperation
+                binding.tvCalResult.text = ""
+            }
+
+            addNumBuilderToList()
             listNumber.add(operationCalculator.value)
-            binding.tvCalScreen.text = fullOperation
-            punto = false
-            signo=true
-        }
-        else if (operationCalculator==OperationCalculator.RESTA&&fullOperation==""){
-            calScreen += "-"
-            fullOperation += "-"
-            binding.tvCalScreen.text = fullOperation
-        }
-        else if (operationCalculator==OperationCalculator.RESTA && subtractionOpen==false && listNumber.size > 0){//la ultima parte impide el redundante "..4-(-5)
-           if (listNumber.last() != "-" ){
-            subtractionOpen=true
-            fullOperation += "(-"
-            calScreen = "-"
-            binding.tvCalScreen.text = fullOperation
-           }
+            upDateScreen(operationCalculator.value)
+            previousOperator = true
+            point = false
+
+        } else if (operationCalculator == OperationCalculator.RESTA && fullOperation == "") {
+
+            upDateNumAndScreen("-")
+
+        } else if (operationCalculator == OperationCalculator.RESTA
+            && listNumber.last() != "-"
+            && !subtractionOpen
+            && listNumber.size > 0) {//la ultima parte impide el redundante "..4-(-5)
+
+                numBuilder = "-"
+                upDateScreen("(-")
+                subtractionOpen = true
+
         }
 
     }
 
     private fun buildResult(): String {
-        if (listNumber.size>=3){
-        while (listNumber.size > 1) {
-            var index = listNumber.indexOf(OperationCalculator.MULTIPLICACION.value) // regresa la posicion del elemento que estas buscando
-            var result = 0.0
+        if (listNumber.size > 1) {
 
-            if (index < 0) {
-                index = listNumber.indexOf(OperationCalculator.DIVISION.value)
-                if (listNumber[index+1]=="0"||listNumber[index+1]=="-0"){
-                    //codigo que rompa el ciclo, resetea las variables y envia un mensaje de la division por 0,
-                    // sepodria imprimir la listNumber en su estado actual
-                }
+            while (listNumber.size > 1) {
+                var index = listNumber.indexOf(OperationCalculator.MULTIPLICACION.value) // regresa la posicion del elemento que estas buscando
+                var result = 0.0
 
-                if(index < 0) {
-                    index = listNumber.indexOf(OperationCalculator.SUMA.value)
-                    if(index < 0) {
-                        index = listNumber.indexOf(OperationCalculator.RESTA.value)
-                        if(index < 0) {
+                if (index < 0) {
+                    index = listNumber.indexOf(OperationCalculator.DIVISION.value)
+                    if (listNumber[index + 1].toDouble() == 0.0) {
+                        var msg = ""
+                        listNumber.forEach { msg += it }
+                        msg = "No es posible dividir entre cero:\n" + msg
+                        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+                        clearAll()
+                        return ""
+                    }
 
+                    if (index < 0) {
+                        index = listNumber.indexOf(OperationCalculator.SUMA.value)
+                        if (index < 0) {
+                            index = listNumber.indexOf(OperationCalculator.RESTA.value)
+                            if (index < 0) {
+
+                            } else {
+                                result = listNumber[index - 1].toDouble()
+                                    .minus(listNumber[index + 1].toDouble())
+                            }
                         } else {
-                            result = listNumber[index-1].toDouble().minus(listNumber[index+1].toDouble())
+                            result = listNumber[index - 1].toDouble()
+                                .plus(listNumber[index + 1].toDouble())
                         }
                     } else {
-                        result = listNumber[index-1].toDouble().plus(listNumber[index+1].toDouble())
+                        result = listNumber[index - 1].toDouble()
+                                .div(listNumber[index + 1].toDouble())
                     }
                 } else {
-                    result = listNumber[index-1].toDouble().div(listNumber[index+1].toDouble())
+                    result = listNumber[index - 1].toDouble()
+                        .times(listNumber[index + 1].toDouble())
                 }
-            } else {
-                result = listNumber[index-1].toDouble().times(listNumber[index+1].toDouble())
-            }
 
-            listNumber[index-1] = result.toString()
-            listNumber.removeAt(index + 1)
-            listNumber.removeAt(index)
-        }
+                listNumber[index - 1] = result.toString()
+                listNumber.removeAt(index + 1)
+                listNumber.removeAt(index)
+            }
         }
         return listNumber.first()
     }
-
 
 
 }

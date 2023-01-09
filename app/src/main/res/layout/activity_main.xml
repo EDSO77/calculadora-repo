@@ -23,7 +23,7 @@
             android:background="@color/common_background"
             android:textColor="@color/white"
             android:textSize="72sp"
-            android:text="1.1"
+            android:text=""
             android:textAlignment="gravity"
             android:gravity="bottom|end" />
 
@@ -35,7 +35,7 @@
             android:background="@color/common_background"
             android:textColor="@color/white"
             android:textSize="72sp"
-            android:text="0.0"
+            android:text=""
             android:textAlignment="gravity"
             android:gravity="bottom|end" />
 
@@ -58,17 +58,36 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
 
             <Button
                 android:id="@+id/bt_clear"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/common_min_padding"
-                android:layout_weight="3"
-                android:textSize="@dimen/buton_text_size"
+                android:layout_weight="1"
+                android:textSize="14sp"
                 app:backgroundTint="#3F51B5"
                 android:text="CLEAR" />
+            <Button
+                android:id="@+id/bt_open"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text="(" />
+            <Button
+                android:id="@+id/bt_clouse"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/common_min_padding"
+                android:layout_weight="1"
+                android:textSize="@dimen/buton_text_size"
+                app:backgroundTint="#FF5722"
+                android:text=")" />
 
             <Button
                 android:id="@+id/bt_division"
