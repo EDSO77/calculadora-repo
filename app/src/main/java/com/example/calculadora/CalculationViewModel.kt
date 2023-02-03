@@ -1,7 +1,7 @@
 package com.example.calculadora
 
 import android.widget.Button
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -13,10 +13,15 @@ class CalculationViewModel: ViewModel() {
 //    val currentUser = UserProvider.random()
 //     userModel.postValue(currentUser)
 
-    private val calculationModel= CalculationModel("","")
+    private val action = PaySingleLiveEvent<CalculatorActions>()
+    fun getActionLiveData() = action as LiveData<CalculatorActions>
 
-    val fulloperationLiveData = MutableLiveData<String>()
-    val resultLiveData = MutableLiveData<String>()
+
+
+    //val fulloperationLiveData = MutableLiveData<String>()
+    var fulloperation: String = ""
+    //val resultLiveData = MutableLiveData<String>()
+    var resultContext : String = ""
     val message = MutableLiveData<String>()
 
     private var listNumber: MutableList<String> = mutableListOf()
@@ -57,14 +62,12 @@ class CalculationViewModel: ViewModel() {
     }
     fun setOnCLickIgual(){
 
-        if (previousOperator == false && resultLiveData.value != "") {
-            val aux = resultLiveData.value
+        if (!previousOperator && resultContext != "") {
+            val aux = resultContext
             clearAll()
 
-            if (aux != null) {
-                upDateScreen(aux)
-                listNumber.add(aux)
-            }
+            upDateScreen(aux)
+            listNumber.add(aux)
 
             operatorRequired = true
             previousOperator = false
@@ -76,8 +79,13 @@ class CalculationViewModel: ViewModel() {
                 upDateScreen(")")
                 subtractionOpen = false
             }
-            resultLiveData.value = buildResult()
-            if (fulloperationLiveData.value != "") {
+            //resultLiveData.value = buildResult()
+            action.value = CalculatorActions.OnShowResultOperation(
+                result = buildResult()
+            )
+
+
+            if (fulloperation != "") {
                 operatorRequired = true
             }
 
@@ -91,7 +99,11 @@ class CalculationViewModel: ViewModel() {
 
 
     fun upDateScreen(addedText: String) {
-        fulloperationLiveData.value += addedText
+        fulloperation += addedText
+        action.value = CalculatorActions.OnShowFullOperation(fulloperation)
+       // action.value = CalculatorActions.OnShowResultOperation(
+         //   result = buildResult()
+
     }
 
    fun upDateNumAndScreen(addedText: String) {
@@ -108,14 +120,18 @@ class CalculationViewModel: ViewModel() {
     }
 
    fun clearAll() {
-       resultLiveData.value = ""
-       fulloperationLiveData.value = ""
+       //resultLiveData.value = ""
+       action.value = CalculatorActions.OnShowResultOperation("")
+       fulloperation = ""
+       action.value = CalculatorActions.OnShowFullOperation("")
         numBuilder = ""
         listNumber.clear()
         point = false
         previousOperator = true
         operatorRequired = false
         subtractionOpen = false
+
+
     }
 
    fun numberOnChangeListener(operationCalculator: OperationCalculator) {
@@ -127,9 +143,11 @@ class CalculationViewModel: ViewModel() {
                 upDateScreen(")")
                 subtractionOpen = false
             }
-            if(resultLiveData.value !="") { // para resetear tvCalResult despues de haber presionado "="
-                fulloperationLiveData.value="(${fulloperationLiveData.value})"
-                resultLiveData.value = ""
+            if(resultContext!="") { // para resetear tvCalResult despues de haber presionado "="
+                fulloperation="(${fulloperation})"
+                action.value = CalculatorActions.OnShowFullOperation(fulloperation)
+                //resultLiveData.value = ""
+                action.value = CalculatorActions.OnShowResultOperation("")
             }
 
             addNumBuilderToList()
@@ -138,7 +156,7 @@ class CalculationViewModel: ViewModel() {
             previousOperator = true
             point = false
 
-        } else if (operationCalculator == OperationCalculator.RESTA && fulloperationLiveData.value == "") {
+        } else if (operationCalculator == OperationCalculator.RESTA && fulloperation == "") {
 
             upDateNumAndScreen("-")
 

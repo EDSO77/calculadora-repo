@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         calculationViewModel = ViewModelProvider(this).get(CalculationViewModel::class.java)
+        bindActionViewModel()
 
-
-        calculationViewModel.fulloperationLiveData.observe(this, Observer{
-            binding.tvCalScreen.text= it
-        })
-        calculationViewModel.resultLiveData.observe(this, Observer{
-            binding.tvCalResult.text= it
-        })
+        //calculationViewModel.fulloperationLiveData.observe(this, Observer{
+          //  binding.tvCalScreen.text= it
+        //})
+        //calculationViewModel.resultLiveData.observe(this, Observer{
+          //  binding.tvCalResult.text= it
+        //})
         calculationViewModel.message.observe(this, Observer{
             Toast.makeText(this, it , Toast.LENGTH_SHORT).show()
 
@@ -43,6 +43,18 @@ class MainActivity : AppCompatActivity() {
         setUpView()
 
 
+    }
+
+    private fun bindActionViewModel() {
+        calculationViewModel.getActionLiveData().observe(this, this::handleAction)
+    }
+
+    private fun handleAction(actions: CalculatorActions) {
+        when (actions) {
+           is CalculatorActions.OnShowResultOperation -> binding.tvCalResult.text = actions.result
+           is CalculatorActions.OnShowFullOperation -> binding.tvCalScreen.text = actions.result
+
+        }
     }
 
     private fun setUpView() {
